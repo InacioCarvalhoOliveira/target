@@ -4,8 +4,8 @@ Teste Desafio Desenvolvedor
 </h1>
 
 ### Projeto
-O código desenvolido propõe retirar as perguntas feitas pelo processo é torná-las escopo de código,
-foi possível desenvolver os itens **1, 2, 3, 4** com código
+O código desenvolvido propõe retirar as perguntas feitas pelo processo é torná-las escopo de código,
+foi possível desenvolver os itens **1, 2, 3, 4** com código o tiem **5** foi projetado aqui no documento
 
 ## 🥷 Tecnologias
 
