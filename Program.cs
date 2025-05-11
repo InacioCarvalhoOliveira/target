@@ -5,7 +5,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Simulações disponiveis: 1,2,3,5");
+            Console.WriteLine("Simulações disponiveis: 1,2,3,4,5");
             Console.WriteLine("Digite o número da simulação que deseja executar:");
             string selected = Console.ReadLine();
             switch (selected)
@@ -19,9 +19,13 @@ namespace ConsoleApp1
                 case "3":
                     CasoTres.Run();
                     break;
+                case "4":
+                    CasoQuatro.Run();
+                    break;
                 case "5":
                     CasoCinco.Run();
                     break;
+                    
 
                 default:
                     Console.WriteLine("Simulação não encontrada.");

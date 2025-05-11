@@ -1,31 +1,49 @@
 
-using System.Linq; 
+using System.Globalization;
+using System.Text.Json;
+
 namespace DesafioDesenvolvedor
 {
+    public class FaturamentoMensal
+    {
+        public Dictionary<string, string> FaturamentoDiario { get; set; }
+    }
+
     public class CasoTres
     {
         public static void Run()
         {
-            // Exemplo de faturamento diário para todos os dias de um ano (pode ajustar conforme necessário)
-            decimal[] faturamentoDiario = { 0, 1500, 0, 2300, 1800, 0, 0, 2100, 1900, 0, 0, 2200, 2000, 2500 }; // Dias sem faturamento representados como 0
+            //decimal[] faturamentoDiario = { 0,400, 1500,601,1200, 0, 2300, 1800, 0, 0, 2100, 1900, 0, 0, 2200, 2000, 2500 }; // Dias sem faturamento representados como 0
 
-            // Filtrar dias com faturamento > 0 (ignora finais de semana/feriados)
-            var diasComFaturamento = faturamentoDiario.Where(f => f > 0).ToArray();
+            string filePath = "util\\faturamentoMensal.json";
+            string json = System.IO.File.ReadAllText(filePath);
+            var faturamentoData = JsonSerializer.Deserialize<FaturamentoMensal>(json);         
 
-            // Calcular o menor e o maior valor de faturamento
-            decimal menorFaturamento = diasComFaturamento.Min();
-            decimal maiorFaturamento = diasComFaturamento.Max();
+            var faturamentoDiario = faturamentoData.FaturamentoDiario
+                .ToDictionary(
+                    KeyValuePair => KeyValuePair.Key,
+                    KeyValuePair => decimal.TryParse(KeyValuePair.Value,CultureInfo.InvariantCulture, out decimal value) ? value : 0
+                )
+                .Where(KeyValuePair => KeyValuePair.Value > 0)
+                .Select(KeyValuePair => KeyValuePair.Value)
+                .ToArray();
 
-            // Calcular a média de faturamento anual (somente para dias com faturamento)
-            decimal mediaAnual = diasComFaturamento.Average();
+            if (!faturamentoDiario.Any())
+            {
+                Console.WriteLine("não há faturamento no mês a processar. Verifique o arquivo JSON.");
+                return;
+            }
 
-            // Calcular o número de dias em que o faturamento foi superior à média anual
-            int diasAcimaDaMedia = diasComFaturamento.Count(f => f > mediaAnual);
+            decimal menorFaturamento = faturamentoDiario.Min();
+            decimal maiorFaturamento = faturamentoDiario.Max();
 
-            // Exibir resultados
-            Console.WriteLine($"Menor faturamento do ano: {menorFaturamento}");
-            Console.WriteLine($"Maior faturamento do ano: {maiorFaturamento}");
-            Console.WriteLine($"Número de dias com faturamento acima da média anual: {diasAcimaDaMedia}");
+            decimal mediamensal = faturamentoDiario.Average();
+
+            int diasAcimaDaMedia = faturamentoDiario.Count(f => f > mediamensal);
+
+            Console.WriteLine($"Menor faturamento em um dia no mês: {menorFaturamento}");
+            Console.WriteLine($"Maior faturamento em um dia no mês: {maiorFaturamento}");
+            Console.WriteLine($"Número de dias com faturamento acima da média mensal: {diasAcimaDaMedia}");
         }
     }
 }
