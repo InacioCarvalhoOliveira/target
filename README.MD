@@ -11,7 +11,6 @@ foi possível desenvolver os itens **1, 2, 3, 4, 5**
 
 - Linguagem: C#(Sdk8.0) 
 - Biblioteca Newtonsoft.Json 
-- [Arquivo json faturamentoMensal Caso Três](./util/faturamentoMensal.json)
 
 ##
 ## ⚡ Base de dados
