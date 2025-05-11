@@ -100,7 +100,7 @@ foi possível desenvolver os itens **1, 2, 3, 4, 5**
     
 <h2><p>
     Implementei a mesma relação de Array a qual fui utilizando desde o Segundo exercício
-    Resposta:<p>
+    <p>Resposta:<p>
     Input realizado : TARGET - TESTE DESENVOLVEDOR 2 <p>
     Retorno invertido : 2 RODEVLOVNESED ETSET - TEGRAT
 </h2>
