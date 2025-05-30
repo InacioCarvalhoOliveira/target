@@ -1,6 +1,7 @@
 
 using System.Globalization;
 using System.Text.Json;
+using Target.Models;
 
 namespace DesafioDesenvolvedor
 {
@@ -14,32 +15,31 @@ namespace DesafioDesenvolvedor
         public static void Run()
         {
             //decimal[] faturamentoDiario = { 0,400, 1500,601,1200, 0, 2300, 1800, 0, 0, 2100, 1900, 0, 0, 2200, 2000, 2500 }; // Dias sem faturamento representados como 0
+            //var faturamentoData = JsonSerializer.Deserialize<FaturamentoMensal>(json);         
+            // if (!faturamentoDiario.Any())
+            // {
+            //     Console.WriteLine("não há faturamento no mês a processar. Verifique o arquivo JSON.");
+            //     return;
+            // }
 
-            string filePath = "util\\faturamentoMensal.json";
+            string filePath = "util\\dados.json";
             string json = System.IO.File.ReadAllText(filePath);
-            var faturamentoData = JsonSerializer.Deserialize<FaturamentoMensal>(json);         
+            var faturamentoDiario = JsonSerializer.Deserialize<List<FaturamentoDia>>(json);
 
-            var faturamentoDiario = faturamentoData.FaturamentoDiario
-                .ToDictionary(
-                    KeyValuePair => KeyValuePair.Key,
-                    KeyValuePair => decimal.TryParse(KeyValuePair.Value,CultureInfo.InvariantCulture, out decimal value) ? value : 0
-                )
-                .Where(KeyValuePair => KeyValuePair.Value > 0)
-                .Select(KeyValuePair => KeyValuePair.Value)
-                .ToArray();
+            var diasComFaturamento = faturamentoDiario
+                .Where(dia => dia.Valor > 0)
+                .Select(dia => dia.Valor).ToList();           
 
             if (!faturamentoDiario.Any())
             {
-                Console.WriteLine("não há faturamento no mês a processar. Verifique o arquivo JSON.");
+                Console.WriteLine("Não há dias com faturamento para processar.");
                 return;
             }
 
-            decimal menorFaturamento = faturamentoDiario.Min();
-            decimal maiorFaturamento = faturamentoDiario.Max();
-
-            decimal mediamensal = faturamentoDiario.Average();
-
-            int diasAcimaDaMedia = faturamentoDiario.Count(f => f > mediamensal);
+            decimal menorFaturamento = diasComFaturamento.Min();
+            decimal maiorFaturamento = diasComFaturamento.Max();
+            decimal mediamensal = diasComFaturamento.Average();
+            int diasAcimaDaMedia = diasComFaturamento.Count(f => f > mediamensal);
 
             Console.WriteLine($"Menor faturamento em um dia no mês: {menorFaturamento}");
             Console.WriteLine($"Maior faturamento em um dia no mês: {maiorFaturamento}");
